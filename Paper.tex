@@ -1,23 +1,24 @@
 \documentclass[journal=jacsat,manuscript=communication]{achemso}
-<<<<<<< Updated upstream
-=======
-%\documentclass{achemso}
->>>>>>> Stashed changes
 \usepackage{mhchem}
 
-\title{An Investigation of Thermal Effects on Electrical Conductivity.}
+\title{Coding a Variational Method \& Hartree-Fock solver using Open-Source tools.}
 \author{Adam Keim}
+\email{a_keim@coloradocollege.edu}
+
+\newcommand*\dif{\mathop{}\!\mathrm{d}}
+\newcommand{\matr}[1]{\mathbf{#1}}
 
 \begin{document}
-\begin{Abstract}
+\begin{abstract}
 Test Beep Boop Oh M y god 
 \end{abstract}
 \section{Introduction}
-Most undergraduate chemistry curriculums gloss over underlying quantum mechanical principles, in large part due to the amount of mathematics required, as well as how abstract many of the ideas involved are. Despite not receiving instruction in quantum mechanics (QM) past toy systems, such as the classic (not classical!) particle in a box, many of these same students are exposed to software packages like Gaussian or WebMO, which harness the aforementioned QM principles to perform physical chemistry calculations.  By leveraging a number of computational approaches, this project aims to show the value of computational quantum methods in the classroom as a way to make computational solver packages less of a "Black Box."
+Most undergraduate chemistry curriculums gloss over underlying quantum mechanical principles, in large part due to the amount of mathematics required, as well as how abstract many of the ideas involved are. Despite not receiving instruction in quantum mechanics (QM) past toy systems, such as the classic (not classical!) particle in a box, many of these same students are exposed to software packages like Gaussian or WebMO, which harness the aforementioned QM principles to perform physical chemistry calculations.  By leveraging a number of computational approaches, this project aims to show the value of computational quantum methods in the classroom as a way to make computational solver packages less of a "black box."
 
 The project presented in this work uses open-source computational chemistry methods to guide students through solving a number of quantum-mechanical systems, using both variational and Hartree-Fock methods.  All of the code is implemented in Python, and is based on the work of [REF: Meyer, Schrier].  In each case, the calculated values are compared to exact values from the literature, and in the case of the more advanced methods, further directions that students may want to take these projects are emphasized.
 
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 \section{Background}
@@ -27,17 +28,36 @@ There are two methods that we will use to estimate energy levels for the systems
 
 The second method is the Hartree-Fock method [REF], which allows us to consider multiple electrons (as long as orbitals are filled, remember this is \textbf{Restricted} Hartree-Fock).  
 >>>>>>> Stashed changes
+=======
+\section{Background}
+There are a number of assumptions that we will make in all of the following cases to drastically simplify solving our system.  The first, and most important of these is that we will neglect relativistic effects, treating our momentum operator as non-relativistic.  We also employ the Born-Oppenheimer approximation, which treats atomic nuclei as static and neglects any changes in their positions.  There are a number of other assumptions which are made, which relate to how we describe wavefunctions as linear combinations of orthogonal basis functions, and that each stationary state (energy eigenfunction) of the system corresponds to one orbital.  We also note that when we are discussing the Hartree-Fock method, our discussion only applies to closed-shell systems (restricted Hartree-Fock), where all orbitals are doubly occupied. 
+>>>>>>> 68e07139ed6fbe431db6738895d216b559330e93
 \section{Experimental}
 \subsection{Variational solution of a 2 Nucleus system}
-The first choice that needs to be made to analyze the two nucleus \ce{H2+} molecular ion is that of a suitable coordinate system.  In this work, confocal ellipsoidal coordinates are used, where the two foci of the ellipse are the two nuclei.  This gives a Hamiltonian operator (an operator from quantum mechanics that describes the total energy of a system) of
+The first choice that needs to be made to analyze the two nucleus \ce{H2+} molecular ion is that of a suitable coordinate system.  In this work, confocal ellipsoidal coordinates are used, where the two foci of the ellipse are given by the two nuclei.  This gives a Hamiltonian operator (an operator from quantum mechanics that describes the total energy of a system) of
 \begin{equation}
-	\hat{H} = \frac{-2}{R^2\left(\xi^2-\eta^2\right)}\left[\left(\xi^2-1\right)\frac{\partial^2 }{\partial\xi^2}\right]-\frac{2}{R(\xi+\eta)}-\frac{2}{R(\xi-\eta)}+\frac{1}{R}
+	\hat{H} = \frac{-2}{R^2\left(\xi^2-\eta^2\right)}\left[\left(\xi^2-1\right)\frac{\partial^2 }{\partial\xi^2}\right]-\frac{2}{R(\xi+\eta)}-\frac{2}{R(\xi-\eta)}+\frac{1}{R}.
 \end{equation}
+To apply the variational method [REF GRIFFITHS], a trial wavefunction needs to be selected, and in this case a reasonable choice is
+\begin{equation}
+	\phi_t = c\left(\frac{Z^{3/2}}{\sqrt{\pi}}e^{-Zr_a} + \frac{Z^{3/2}}{\sqrt{\pi}}e^{-Zr_b}\right).
+\end{equation}
+Where c is a constant
+With the Hamiltonian and a trial wavefunction, we can apply the variational method.  Since our trial wavefunction is not necessarily normalized, this looks like
+\begin{equation}
+E_{ground} \leq \frac{\left<\phi | \hat{H} | \phi \right>}{\left<\phi|\phi\right>}.
+\end{equation} 
+The angular bracket notation is known as bra-ket notation and is a standard notation commonly used in quantum mechanics, where
+\begin{align}
+	\left<x|y\right> &= \int x^* y d\tau \\
+	\left<x|\hat{O}|y\right> &= \int x^* \hat{O}yd\tau.
+\end{align}
 \subsection{Self-consistent calculations for He atom}
-For an \ce{He} atom, things get a little more complicated.  While there is only one nucleus in the system, now there are two electrons, and thus the system cannot be solved exactly.  However, since there is only one nucleus, there is no need to introduce the concept of basis sets, and we can use Slater-type \textit{1s} functions with the form 
+For an \ce{He} atom, things get a little more complicated.  There are no known analytic solutions for systems of more than one electron, so even the best solutions still have errors in their approximations.  However, since there is only one nucleus, there is no need to introduce the concept of basis sets, and we can use Slater-type \textit{1s} functions with the form 
 \begin{equation}
 	\phi_n(r,\theta,\phi) = 2\zeta_n^{3/2}e^{-\zeta_nr/a_0}Y_0^0(\theta,\phi)
 \end{equation}
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 where $\zeta$ is a parameter that describes the spatial extent of the function.  Optimal values for $\zeta$ are selected according to [REF].
 
@@ -53,6 +73,19 @@ where $\zeta$ is a parameter that describes the spatial extent of the function. 
 	This matrix describes where the electrons are located in terms of our bases.
 	\item Build our Fock matrix $F_{rs}$ following
 
+=======
+where $\zeta$ is a parameter that describes the spatial extent of the function.  Optimal values for $\zeta$ are selected according to [REF].  The method used to evaluate the wavefunction is known as the Hartree-Fock method, and consists of the following major steps:
+\begin{enumerate}
+	\item Choose the number of occupied orbitals $N_\mathrm{occ}$, number ($N_\mathrm{basis}$), and type of bases.
+	\item Calculate overlap, orthogonality transform, one-electron, and two-electron matrices.  For both of our choices of basis set, we can calculate these analytically ahead of time rather than numerically.
+	\item Make initial guesses for eigenvector coefficients and use these to calculate a charge density matrix, given by
+\begin{equation}
+	P_{tu} = 2 \sum_{i=1}^{N_{\mathrm{occ}}}c^*_{it}c_{iu}.
+\end{equation}
+	This matrix describes where the electrons are located in terms of our bases.
+	\item Build our Fock matrix $F_{rs}$ following
+
+>>>>>>> 68e07139ed6fbe431db6738895d216b559330e93
 \begin{equation}
 	F_{rs} = h_{rs} + \sum_{t=1}^{N_\mathrm{basis}}\sum_{u=1}^{N_\mathrm{basis}}P_{tu}\left\{(rs|tu) -\frac{1}{2}(ru|ts)\right\}.
 \end{equation}
@@ -67,16 +100,20 @@ where $\zeta$ is a parameter that describes the spatial extent of the function. 
 \end{equation}
 is smaller than some threshold, terminate.  Otherwise, go back to step 4.
 \end{enumerate}
+<<<<<<< HEAD
 Practically, we don't define a threshold for Step 9, since the systems we are interested are small enough that they converge after $<10$ iterations. 
 >>>>>>> Stashed changes
+=======
+Practically, we don't define a threshold, since the systems we are interested are small enough that they converge after $<10$ iterations. 
+>>>>>>> 68e07139ed6fbe431db6738895d216b559330e93
 
 \subsection{Self-consistent calculations for \ce{H2}}
 Once there are two nuclei in the system, Slater-type orbital functions get messy, so we approximate the orbital wavefunctions as a linear combination of Gaussian-type orbitals, to both speed up and simplify the following calculations.  A $1s$ Gaussian basis function is given by
 \begin{equation}
 	g_{1s}(\vec{r}_\alpha)=\left(\frac{2\alpha}{\pi}\right)^{3/4}e^{-\alpha|\vec{r}_\alpha|^2},
 \end{equation}
-which has the familiar form of a Gaussian distribution, and is quite simple to integrate analytically.  The only other thing that changes relative to the previous experiment, other than basis sets, is that there is now a contribution to the energy from the Coulombic repulsion between the two nuclei, which must be taken into account.  Otherwise, the self-consistent field calculations remain similar, and we obtain 
+which has the familiar form of a Gaussian distribution, and is quite simple to integrate analytically.  The only other thing that changes relative to the previous experiment, other than basis sets, is that there is now a contribution to the energy from the Coulombic repulsion between the two nuclei, which must be taken into account. (The $V_{nn}$ term in Equation \ref{eq:hf_energy})  Otherwise, the self-consistent field calculations remain similar, and we are able to calculate a ground state energy and a bond dissociation curve.
 \section{Results and Discussion}
 \section{Conclusion}
-Coding is a proven method to increase feelings of gratification experienced by students while learning.  Abstract concepts such as quantum mechanics lend themselves particularly well to computational methods, given the heavy mathematics and abstract concepts involved.  By providing students with a sequence of experiments which they can carry out in the classroom, this work aims to "de-mystify" some of the quantum-motivated computations happening inside of computational chemistry packages such as Gaussian and WebMO. The tools used for the computations are exclusively open-source, with hopes that students who do not have access to, or do not wish to use, proprietary software packages like Mathematica can study and replicate these experiments as an method to further their chemistry education. Overall, this project aims to point students at a number of projects they can carry out, as well as providing Python code to assist in debugging and verifying results. 
+Coding is a proven method to increase feelings of gratification experienced by students while learning[REF].  Abstract concepts such as quantum mechanics lend themselves particularly well to computational methods, given the heavy mathematics and abstract concepts involved.  By providing students with a sequence of experiments which they can carry out in the classroom, this work aims to "de-mystify" some of the quantum-motivated computations happening inside of computational chemistry packages such as Gaussian and WebMO. The tools used for the computations are exclusively open-source, with hopes that students who do not have access to, or do not wish to use, proprietary software packages like Mathematica can study and replicate these experiments as an method to further their chemistry education. Overall, this project aims to point students at a number of projects they can carry out, as well as providing Python code to assist in debugging and verifying results. 
 \end{document}
