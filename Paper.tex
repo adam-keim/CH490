@@ -1,4 +1,8 @@
 \documentclass[journal=jacsat,manuscript=communication]{achemso}
+<<<<<<< Updated upstream
+=======
+%\documentclass{achemso}
+>>>>>>> Stashed changes
 \usepackage{mhchem}
 
 \title{An Investigation of Thermal Effects on Electrical Conductivity.}
@@ -14,6 +18,15 @@ Most undergraduate chemistry curriculums gloss over underlying quantum mechanica
 The project presented in this work uses open-source computational chemistry methods to guide students through solving a number of quantum-mechanical systems, using both variational and Hartree-Fock methods.  All of the code is implemented in Python, and is based on the work of [REF: Meyer, Schrier].  In each case, the calculated values are compared to exact values from the literature, and in the case of the more advanced methods, further directions that students may want to take these projects are emphasized.
 
 
+<<<<<<< Updated upstream
+=======
+\section{Background}
+There are a number of assumptions that we will make in all of the following cases to drastically simplify solving our system.  The first, and most important of these is that we will neglect relativistic effects, treating our momentum operator as non-relativistic.  We also employ the Born-Oppenheimer approximation, which treats atomic nuclei as static and neglects any changes in their positions.  There are a number of other assumptions which are made, which relate to how we describe wavefunctions as linear combinations of orthogonal basis functions, and that each stationary state (energy eigenfunction) of the system corresponds to one orbital.  We also note that when we are discussing the Hartree-Fock method, our discussion only applies to closed-shell systems (restricted Hartree-Fock), where all orbitals are doubly occupied. 
+
+There are two methods that we will use to estimate energy levels for the systems we are considering.  The first of these is the variational method, a foundational tool in quantum mechanics (a detailed explanation, and justification for, this method can be found in any quantum mechanics textbook, though I am quite fond of Griffiths [REF]).  We will apply this method to a 2-nucleus \ce{H2+} molecular ion, and calculate energy levels and a bond dissociation curve.  The goals of this experiment are to lay out some of the foundational software tools that we will be using for some of the other systems, as well as showing how close of an estimate one can arrive at using quite simple methods.
+
+The second method is the Hartree-Fock method [REF], which allows us to consider multiple electrons (as long as orbitals are filled, remember this is \textbf{Restricted} Hartree-Fock).  
+>>>>>>> Stashed changes
 \section{Experimental}
 \subsection{Variational solution of a 2 Nucleus system}
 The first choice that needs to be made to analyze the two nucleus \ce{H2+} molecular ion is that of a suitable coordinate system.  In this work, confocal ellipsoidal coordinates are used, where the two foci of the ellipse are the two nuclei.  This gives a Hamiltonian operator (an operator from quantum mechanics that describes the total energy of a system) of
@@ -25,8 +38,37 @@ For an \ce{He} atom, things get a little more complicated.  While there is only 
 \begin{equation}
 	\phi_n(r,\theta,\phi) = 2\zeta_n^{3/2}e^{-\zeta_nr/a_0}Y_0^0(\theta,\phi)
 \end{equation}
+<<<<<<< Updated upstream
 where $\zeta$ is a parameter that describes the spatial extent of the function.  Optimal values for $\zeta$ are selected according to [REF].
 
+=======
+where $\zeta$ is a parameter that describes the spatial extent of the function.  Optimal values for $\zeta$ are selected according to [REF].  The method used to evaluate the wavefunction is known as the Hartree-Fock method, and consists of the following major steps:
+\begin{enumerate}
+	\item Choose the number of occupied orbitals $N_\mathrm{occ}$, number ($N_\mathrm{basis}$), and type of bases.
+	\item Calculate overlap, orthogonality transform, one-electron, and two-electron matrices.  For both of our choices of basis set, we can calculate these analytically ahead of time rather than numerically.  Definitions for all of these are too lengthy and complex to include here, but students following along can refer to [REF Schrier].
+	\item Make initial guesses for eigenvector coefficients and use these to calculate a charge density matrix, given by
+\begin{equation}
+	P_{tu} = 2 \sum_{i=1}^{N_{\mathrm{occ}}}c^*_{it}c_{iu}.
+\end{equation}
+	This matrix describes where the electrons are located in terms of our bases.
+	\item Build our Fock matrix $F_{rs}$ following
+
+\begin{equation}
+	F_{rs} = h_{rs} + \sum_{t=1}^{N_\mathrm{basis}}\sum_{u=1}^{N_\mathrm{basis}}P_{tu}\left\{(rs|tu) -\frac{1}{2}(ru|ts)\right\}.
+\end{equation}
+	\item Calculate $\matr{F}' = \matr{X}^\dag\matr{F}\matr{X}$.
+	\item Solve the eigensystem $\matr{F}'\vec{c'}_i=\epsilon_i\vec{c'}_i$.
+	\item Transform back to our original basis $\vec{c}_i$
+	\item Build a new charge density matrix, $\matr{P}$ from eigenvectors obtained in previous step.
+	\item If the difference in energy 
+\begin{equation}
+	E = \sum_{i=1}^{N_\mathrm{occ}}\epsilon_i + \frac{1}{2} \sum_{r=1}^{N_\mathrm{basis}} \sum_{s=1}^{N_\mathrm{basis}}P_{rs}h_{rs}+V_{nn}
+	\label{eq:hf_energy}
+\end{equation}
+is smaller than some threshold, terminate.  Otherwise, go back to step 4.
+\end{enumerate}
+Practically, we don't define a threshold for Step 9, since the systems we are interested are small enough that they converge after $<10$ iterations. 
+>>>>>>> Stashed changes
 
 \subsection{Self-consistent calculations for \ce{H2}}
 Once there are two nuclei in the system, Slater-type orbital functions get messy, so we approximate the orbital wavefunctions as a linear combination of Gaussian-type orbitals, to both speed up and simplify the following calculations.  A $1s$ Gaussian basis function is given by
