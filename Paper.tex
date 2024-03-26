@@ -1,6 +1,7 @@
-% \documentclass[journal=jacsat,manuscript=communication]{achemso}
-\documentclass{achemso}
+\documentclass[journal=jacsat,manuscript=communication]{achemso}
+% \documentclass{achemso}
 \usepackage{mhchem}
+\usepackage{siunitx}
 \usepackage{float}
 
 \title{Coding a Variational Method \& Hartree-Fock solver using Open-Source tools.}
@@ -88,15 +89,46 @@ Once there are two nuclei in the system, Slater-type orbital functions get messy
 \end{equation}
 which has the familiar form of a Gaussian distribution, and is quite simple to integrate analytically.  The only other thing that changes relative to the previous experiment, other than basis sets, is that there is now a contribution to the energy from the Coulombic repulsion between the two nuclei, which must be taken into account. (The $V_{nn}$ term in Equation \ref{eq:hf_energy})  Otherwise, the self-consistent field calculations remain similar, and we are able to calculate a ground state energy and a bond dissociation curve.
 \section{Results and Discussion}
+
+{\setlength{\extrarowheight}{2pt}
+\begin{table}[H]
+  \begin{tabular}{l|ccc}
+    Property & Variational Method & Exact & \% Error \\
+    \hline
+    $R_e$ (\si{\angstrom}) & 1.060 & 1.057 & .28\%\\
+    $E$ (\si{\hartree}) & -.5865 & -.6026 & 2.67\%
+  \end{tabular}
+  \caption{Results for the variational method.  Exact values from [REF Meyer].  $R_e$ is the equilibrium bond length, and $E$ is the ground state energy. }
+  \label{tab:var}
+\end{table}
+
+Table \ref{tab:var} compares the values obtained from the variational method to exact values from the literature, and we see that the values are in quite good alignment, to within $<3\%$.  Unfortunately, the variational method is limited to systems of one electron, though we can still obtain an energy contour plot showing the variational energy across $R,Z$ space.  By taking the minimum energy for each $R$, we obtain a bond dissociation curve (Figure \ref{fig:var_bd}), which has the characteristic shape that we expect to see for a curve of this type.  [REF INTRO CHEM TEXTBOOK]
+
 \begin{figure}[H]
   \includegraphics[width=.5\textwidth]{figures/variational_energy_contour.png}
   \caption{Energy contour plot for the \ce{H2+} molecular ion, calculated with the variational method.}
 \end{figure}
 
+
+
 \begin{figure}[H]
   \includegraphics[width=0.5\textwidth]{figures/variational_dissociation.png}
   \caption{The bond dissociation curve for the \ce{H2+} molecular ion, calculated with the variational method.}
+  \label{fig:var_bd}
 \end{figure}
+
+{\setlength{\extrarowheight}{2pt}
+\begin{table}[H]
+  \begin{tabular}{l|ccc}
+    Property & Hartree-Fock & Exact & \% Error \\
+    \hline
+    $R_e$ (\si{\angstrom}) & .78 & .74 & 5.4\%\\
+    $E$ (\si{\hartree}) & -.5865 & -.6026 & 2.67\%
+  \end{tabular}
+  \caption{Results for the variational method.  Exact values from [REF Schrier].  $R_e$ is the equilibrium bond length, and $E$ is the ground state energy. }
+  \label{tab:hf}
+\end{table}
+
 \begin{figure}[H]
   \includegraphics[width=0.5\textwidth]{figures/Bond_Dissociation_Hydrogen.png}
   \caption{The bond dissociation curve for the \ce{H2} molecule, calculated with Hartree-Fock methods.}
@@ -104,4 +136,7 @@ which has the familiar form of a Gaussian distribution, and is quite simple to i
 
 \section{Conclusion}
 Coding is a proven method to increase feelings of gratification experienced by students while learning[REF].  Abstract concepts such as quantum mechanics lend themselves particularly well to computational methods, given the heavy mathematics and abstract concepts involved.  By providing students with a sequence of experiments which they can carry out in the classroom, this work aims to "de-mystify" some of the quantum-motivated computations happening inside of computational chemistry packages such as Gaussian and WebMO. The tools used for the computations are exclusively open-source, with hopes that students who do not have access to, or do not wish to use, proprietary software packages like Mathematica can study and replicate these experiments as an method to further their chemistry education. Overall, this project aims to point students at a number of projects they can carry out, as well as providing Python code to assist in debugging and verifying results. 
+
+\section{Further Directions}
+There are a number of quite interested further directions for this research.  Interested students could generalize the Hartree-Fock code to either treat systems with more numerous nuclei or electrons, or remove the restriction on our Hartree-Fock implementation that forces completely full orbitals.  It would also be interesting to add more complex gaussian basis sets to better describe the spatial extent of the wavefunction of electrons, recalling that this will approach an asymptotic Hartree-Fock limit.  Modern approaches to similar problems often either exclusively use, or combine with Hartree-Fock, methods known as density functional theory (DFT), which is an exact method that does not have an instrinsic limit, and is limited by our approximations about physical systems.  
 \end{document}
