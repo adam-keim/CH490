@@ -1,0 +1,40 @@
+\documentclass[journal=jacsat,manuscript=communication]{achemso}
+\usepackage{mhchem}
+
+\title{An Investigation of Thermal Effects on Electrical Conductivity.}
+\author{Adam Keim}
+
+\begin{document}
+\begin{Abstract}
+Test Beep Boop Oh M y god 
+\end{abstract}
+\section{Introduction}
+Most undergraduate chemistry curriculums gloss over underlying quantum mechanical principles, in large part due to the amount of mathematics required, as well as how abstract many of the ideas involved are. Despite not receiving instruction in quantum mechanics (QM) past toy systems, such as the classic (not classical!) particle in a box, many of these same students are exposed to software packages like Gaussian or WebMO, which harness the aforementioned QM principles to perform physical chemistry calculations.  By leveraging a number of computational approaches, this project aims to show the value of computational quantum methods in the classroom as a way to make computational solver packages less of a "Black Box."
+
+The project presented in this work uses open-source computational chemistry methods to guide students through solving a number of quantum-mechanical systems, using both variational and Hartree-Fock methods.  All of the code is implemented in Python, and is based on the work of [REF: Meyer, Schrier].  In each case, the calculated values are compared to exact values from the literature, and in the case of the more advanced methods, further directions that students may want to take these projects are emphasized.
+
+
+\section{Experimental}
+\subsection{Variational solution of a 2 Nucleus system}
+The first choice that needs to be made to analyze the two nucleus \ce{H2+} molecular ion is that of a suitable coordinate system.  In this work, confocal ellipsoidal coordinates are used, where the two foci of the ellipse are the two nuclei.  This gives a Hamiltonian operator (an operator from quantum mechanics that describes the total energy of a system) of
+\begin{equation}
+	\hat{H} = \frac{-2}{R^2\left(\xi^2-\eta^2\right)}\left[\left(\xi^2-1\right)\frac{\partial^2 }{\partial\xi^2}\right]-\frac{2}{R(\xi+\eta)}-\frac{2}{R(\xi-\eta)}+\frac{1}{R}
+\end{equation}
+\subsection{Self-consistent calculations for He atom}
+For an \ce{He} atom, things get a little more complicated.  While there is only one nucleus in the system, now there are two electrons, and thus the system cannot be solved exactly.  However, since there is only one nucleus, there is no need to introduce the concept of basis sets, and we can use Slater-type \textit{1s} functions with the form 
+\begin{equation}
+	\phi_n(r,\theta,\phi) = 2\zeta_n^{3/2}e^{-\zeta_nr/a_0}Y_0^0(\theta,\phi)
+\end{equation}
+where $\zeta$ is a parameter that describes the spatial extent of the function.  Optimal values for $\zeta$ are selected according to [REF].
+
+
+\subsection{Self-consistent calculations for \ce{H2}}
+Once there are two nuclei in the system, Slater-type orbital functions get messy, so we approximate the orbital wavefunctions as a linear combination of Gaussian-type orbitals, to both speed up and simplify the following calculations.  A $1s$ Gaussian basis function is given by
+\begin{equation}
+	g_{1s}(\vec{r}_\alpha)=\left(\frac{2\alpha}{\pi}\right)^{3/4}e^{-\alpha|\vec{r}_\alpha|^2},
+\end{equation}
+which has the familiar form of a Gaussian distribution, and is quite simple to integrate analytically.  The only other thing that changes relative to the previous experiment, other than basis sets, is that there is now a contribution to the energy from the Coulombic repulsion between the two nuclei, which must be taken into account.  Otherwise, the self-consistent field calculations remain similar, and we obtain 
+\section{Results and Discussion}
+\section{Conclusion}
+Coding is a proven method to increase feelings of gratification experienced by students while learning.  Abstract concepts such as quantum mechanics lend themselves particularly well to computational methods, given the heavy mathematics and abstract concepts involved.  By providing students with a sequence of experiments which they can carry out in the classroom, this work aims to "de-mystify" some of the quantum-motivated computations happening inside of computational chemistry packages such as Gaussian and WebMO. The tools used for the computations are exclusively open-source, with hopes that students who do not have access to, or do not wish to use, proprietary software packages like Mathematica can study and replicate these experiments as an method to further their chemistry education. Overall, this project aims to point students at a number of projects they can carry out, as well as providing Python code to assist in debugging and verifying results. 
+\end{document}
